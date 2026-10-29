@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Frontend build output
+dist/
+*.local
+
+# Backend build output (Maven / Gradle)
+target/
+build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# H2 database files
+*.mv.db
+*.trace.db
+*.lock.db
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# IDE / editor
+.idea/
+.vscode/
+*.iml
+.project
+.classpath
+.settings/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
