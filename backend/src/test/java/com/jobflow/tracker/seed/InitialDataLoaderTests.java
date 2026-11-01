@@ -5,9 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,6 +101,33 @@ class InitialDataLoaderTests {
 		assertThat(userRepository.findByLoginId(InitialDataLoader.ADVISOR_LOGIN_ID))
 				.hasValueSatisfying(advisor -> assertThat(advisor.getRole()).isEqualTo(Role.ADVISOR));
 		assertThat(applicationRepository.countByOwnerId(seeker.getId())).isEqualTo(demoApplicationsBefore);
+	}
+
+	// 起動直後は担当者・求職者のどちらも README のパスワードでログインできる状態なので、両方が警告の対象。
+	@Test
+	void activeDemoAccountRoles_afterStartup_includesBothDemoAccounts() {
+		assertThat(loader.activeDemoAccountRoles()).containsExactly(Role.ADVISOR, Role.SEEKER);
+	}
+
+	// アカウントが無ければ警告の対象から外れること。削除は @Transactional でロールバックされる。
+	@Test
+	@Transactional
+	void activeDemoAccountRoles_whenAdvisorRemoved_listsOnlySeeker() {
+		userRepository.delete(userRepository.findByLoginId(InitialDataLoader.ADVISOR_LOGIN_ID).orElseThrow());
+		userRepository.flush();
+
+		assertThat(loader.activeDemoAccountRoles()).containsExactly(Role.SEEKER);
+	}
+
+	// 警告は出すが、ログイン ID とパスワードはログに書かないこと。
+	@Test
+	@ExtendWith(OutputCaptureExtension.class)
+	void run_withActiveDemoAccounts_logsWarningWithoutCredentials(CapturedOutput output) {
+		loader.run(new DefaultApplicationArguments());
+
+		assertThat(output).contains("Demo accounts with passwords published in the README are active")
+				.doesNotContain(InitialDataLoader.ADVISOR_LOGIN_ID, InitialDataLoader.ADVISOR_PASSWORD,
+						InitialDataLoader.SEEKER_LOGIN_ID, InitialDataLoader.SEEKER_PASSWORD);
 	}
 
 	private void assertPasswordIsBcryptHashOf(AppUser user, String rawPassword) {

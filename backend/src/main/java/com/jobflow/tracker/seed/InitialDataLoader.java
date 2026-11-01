@@ -1,6 +1,7 @@
 package com.jobflow.tracker.seed;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,31 @@ public class InitialDataLoader implements ApplicationRunner {
 		createUserIfAbsent(ADVISOR_LOGIN_ID, ADVISOR_PASSWORD, ADVISOR_NAME, Role.ADVISOR);
 		createUserIfAbsent(SEEKER_LOGIN_ID, SEEKER_PASSWORD, SEEKER_NAME, Role.SEEKER)
 				.ifPresent(this::createDemoApplications);
+
+		List<Role> activeDemoRoles = activeDemoAccountRoles();
+		if (!activeDemoRoles.isEmpty()) {
+			// public のリポジトリを土台に公開された時、固定パスワードのアカウントが残っていると気付けるように。ID とパスワードは書かない。
+			log.warn("Demo accounts with passwords published in the README are active (roles={}). "
+					+ "Do not use them in a publicly accessible environment.", activeDemoRoles);
+		}
+	}
+
+	// アカウントがあり、README のパスワードでまだログインできるものを「有効」とみなす。
+	List<Role> activeDemoAccountRoles() {
+		List<Role> roles = new ArrayList<>();
+		if (acceptsPassword(ADVISOR_LOGIN_ID, ADVISOR_PASSWORD)) {
+			roles.add(Role.ADVISOR);
+		}
+		if (acceptsPassword(SEEKER_LOGIN_ID, SEEKER_PASSWORD)) {
+			roles.add(Role.SEEKER);
+		}
+		return roles;
+	}
+
+	private boolean acceptsPassword(String loginId, String rawPassword) {
+		return userRepository.findByLoginId(loginId)
+				.map(user -> passwordEncoder.matches(rawPassword, user.getPasswordHash()))
+				.orElse(false);
 	}
 
 	// 作った時だけユーザーを返す。既にあれば空。
