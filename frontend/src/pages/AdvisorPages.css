@@ -1,0 +1,78 @@
+/* 担当者の画面の表。画面幅に収まらない時は表だけ横にスクロールさせる */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-size: 0.9375rem;
+}
+
+.table-toolbar__select {
+  min-height: 36px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.data-table th {
+  background: var(--color-bg);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* .data-table td の text-align: left より強くするため、.data-table を前に付ける */
+.data-table .data-table__number {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table__nowrap {
+  white-space: nowrap;
+}
+
+.data-table__text {
+  min-width: 6em;
+  overflow-wrap: anywhere;
+}
+
+/* メモの改行はそのまま見せる（HTML としては出さない） */
+.data-table__memo {
+  min-width: 12em;
+  max-width: 28em;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.page-link--start {
+  text-align: left;
+}

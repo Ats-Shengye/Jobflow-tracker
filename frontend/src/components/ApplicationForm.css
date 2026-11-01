@@ -1,0 +1,53 @@
+/* 応募フォームで使う、index.css の .field に足りない部品 */
+.field__required {
+  color: var(--color-danger);
+}
+
+.field--group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.field--group .field__label {
+  padding: 0;
+}
+
+.field__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
+/* 押しやすいよう、ラベルごと 44px の高さにする */
+.field__choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.field__choice input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.field--group[aria-invalid='true'] .field__choices {
+  outline: 1px solid var(--color-danger);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+select.field__input {
+  cursor: pointer;
+}
+
+.field__input--multiline {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}

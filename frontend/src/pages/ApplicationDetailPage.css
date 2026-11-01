@@ -1,0 +1,40 @@
+/* 応募詳細の項目一覧。スマホ幅なので項目名と値を縦に並べる */
+.detail-list {
+  margin: 0;
+  padding: 4px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.detail-list__row {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detail-list__row + .detail-list__row {
+  border-top: 1px solid var(--color-border);
+}
+
+.detail-list__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.detail-list__value {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* バッジが行いっぱいに伸びないようにする */
+.detail-list__value .status-badge {
+  display: inline-block;
+}
+
+/* メモの改行はそのまま見せる（HTML としては出さない） */
+.detail-list__value--multiline {
+  white-space: pre-wrap;
+}
