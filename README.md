@@ -37,16 +37,43 @@
 
 ## デモ画像
 
-<!-- TODO: 全画面のスクリーンショットを貼る（本番 URL を出さないので必須）。各画像に一言。
-- ログイン画面
-- ユーザー登録画面
-- 応募一覧画面
-- 応募登録画面
-- 応募詳細画面
-- 応募編集画面
-- 担当者用一覧画面
-- 求職者別応募画面
--->
+求職者の画面はスマートフォンの幅（390px）、担当者の画面は PC の幅（1280px）で撮影しています。
+
+### 求職者の画面
+
+| ログイン | ユーザー登録 |
+|:---:|:---:|
+| <img src="docs/screenshots/01-login.png" width="260" alt="ログイン画面"> | <img src="docs/screenshots/02-signup.png" width="260" alt="ユーザー登録画面"> |
+| 求職者と担当者で同じ画面を使い、ログイン後に開く画面が分かれます。 | 求職者のアカウントを作ります。入力欄の下に文字数などの条件を表示しています。 |
+
+| 応募一覧 | 応募一覧（ダークモード） |
+|:---:|:---:|
+| <img src="docs/screenshots/03-applications.png" width="260" alt="応募一覧画面"> | <img src="docs/screenshots/03-applications-dark.png" width="260" alt="ダークモードの応募一覧画面"> |
+| 自分の応募を申込日の新しい順に並べ、ステータスを色付きのラベルで表示します。 | 端末の設定がダークモードの時の表示 |
+
+| 応募登録 | 応募詳細 |
+|:---:|:---:|
+| <img src="docs/screenshots/04-application-new.png" width="260" alt="応募登録画面"> | <img src="docs/screenshots/05-application-detail.png" width="260" alt="応募詳細画面"> |
+| 必須項目に * を付けています。申込日には今日の日付が初めから入ります。 | 応募の全項目と最終更新日時を表示します。 |
+
+| 応募編集 |
+|:---:|
+| <img src="docs/screenshots/06-application-edit.png" width="260" alt="応募編集画面"> |
+| ステータスを「面接」にすると、面接回数の欄が出ます。 |
+
+### 担当者の画面
+
+#### 求職者一覧
+
+求職者ごとの応募件数と最終更新日を一覧にします。「最終更新日の古い順」に並べ替えると、応募が0件の人や更新が止まっている人が上に来ます。
+
+<img src="docs/screenshots/07-advisor-seekers.png" alt="担当者用の求職者一覧画面">
+
+#### 求職者別の応募
+
+選んだ求職者の応募を、全項目そろった表で確認できます（担当者は閲覧だけ）。
+
+<img src="docs/screenshots/08-advisor-seeker-applications.png" alt="求職者別の応募一覧画面">
 
 ## 使用技術
 
