@@ -81,7 +81,7 @@ final class ApiTestSupport {
 	}
 
 	// テスト用の DB は他のテストクラスと共有なので、応募を書き込むテストは毎回新しい求職者を作って使う。
-	// デモの求職者（seeker01）の応募は InitialDataLoaderTests がステータスの揃い方を見ているので触らない。
+	// デモの求職者（seeker01〜seeker07）の応募は InitialDataLoaderTests が件数・ステータス・最終更新日時を見ているので触らない。
 	static LoggedInUser registerAndLoginSeeker(MockMvc mockMvc, JsonMapper jsonMapper, String name) throws Exception {
 		String loginId = "t-" + UUID.randomUUID();
 		String body = jsonMapper

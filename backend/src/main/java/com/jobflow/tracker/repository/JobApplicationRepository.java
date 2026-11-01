@@ -1,9 +1,13 @@
 package com.jobflow.tracker.repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 
 import com.jobflow.tracker.entity.JobApplication;
 
@@ -22,4 +26,11 @@ public interface JobApplicationRepository extends Repository<JobApplication, Lon
 	Optional<JobApplication> findByIdAndOwnerId(Long id, Long ownerId);
 
 	long countByOwnerId(Long ownerId);
+
+	// 初期データ専用。一括 update は @PreUpdate を通らないので、デモの応募の最終更新日時を過去の日時にできる。
+	// 他の取得と同じく、持ち主で絞った行だけを書き換える。
+	@Modifying(flushAutomatically = true, clearAutomatically = true)
+	@Query("update JobApplication a set a.updatedAt = :updatedAt where a.id = :id and a.owner.id = :ownerId")
+	int overwriteUpdatedAtForSeedData(@Param("id") Long id, @Param("ownerId") Long ownerId,
+			@Param("updatedAt") Instant updatedAt);
 }

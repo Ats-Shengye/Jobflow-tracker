@@ -153,6 +153,29 @@ class JobApplicationRepositoryTests {
 		assertThat(reloaded.getMemo()).isEqualTo("更新後のメモ");
 	}
 
+	// 初期データ用の一括 update は @PreUpdate を通らないので、渡した過去の日時がそのまま入り、他の行は変わらないこと。
+	@Test
+	void overwriteUpdatedAtForSeedData_setsGivenInstantOnlyOnThatRow() {
+		JobApplication target = persistApplication(owner, LocalDate.of(2026, 7, 12));
+		JobApplication untouched = persistApplication(owner, LocalDate.of(2026, 7, 12));
+		Instant untouchedBefore = untouched.getUpdatedAt();
+		Instant pastInstant = Instant.parse("2026-07-17T01:20:00Z");
+
+		// 持ち主が違えば書き換えない。
+		int rowsForOtherUser = applicationRepository.overwriteUpdatedAtForSeedData(target.getId(), otherUser.getId(),
+				pastInstant);
+		int updatedRows = applicationRepository.overwriteUpdatedAtForSeedData(target.getId(), owner.getId(),
+				pastInstant);
+		entityManager.clear();
+
+		assertThat(rowsForOtherUser).isZero();
+		assertThat(updatedRows).isEqualTo(1);
+		assertThat(applicationRepository.findByIdAndOwnerId(target.getId(), owner.getId()).orElseThrow()
+				.getUpdatedAt()).isEqualTo(pastInstant);
+		assertThat(applicationRepository.findByIdAndOwnerId(untouched.getId(), owner.getId()).orElseThrow()
+				.getUpdatedAt()).isEqualTo(untouchedBefore);
+	}
+
 	@Test
 	void delete_ownApplication_removesOnlyThatRow() {
 		JobApplication toDelete = persistApplication(owner, LocalDate.of(2026, 10, 1));
