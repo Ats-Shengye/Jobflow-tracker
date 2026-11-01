@@ -38,6 +38,8 @@ public class AppUser {
 	@Column(name = "password", nullable = false, length = PASSWORD_HASH_MAX_LENGTH)
 	private String passwordHash;
 
+	// 氏名は画面に表示するだけなので、姓と名に分けず1つの欄にする。
+	// 名字の無い人や名前が先に来る人もいるため。五十音順に並べたくなったら、分けるよりフリガナを足す。
 	@Column(name = "name", nullable = false, length = NAME_MAX_LENGTH)
 	private String name;
 
