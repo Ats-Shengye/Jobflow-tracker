@@ -17,7 +17,10 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "uk_users_login_id", columnNames = "login_id"))
 public class AppUser {
 
-	public static final int LOGIN_ID_MAX_LENGTH = 20;
+	// 登録の入力チェックもこの値を参照する。列長を変えたら既存の DB ファイルは作り直しが要る（ddl-auto=update は列長を変えない）。
+	public static final int LOGIN_ID_MIN_LENGTH = 4;
+
+	public static final int LOGIN_ID_MAX_LENGTH = 64;
 
 	public static final int NAME_MAX_LENGTH = 50;
 
