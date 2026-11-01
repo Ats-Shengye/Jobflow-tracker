@@ -1,111 +1,262 @@
+/* 色はここにまとめ、端末の設定がダークの時は下の @media で入れ替える */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  color-scheme: light;
+  --color-bg: #f4f5f7;
+  --color-surface: #ffffff;
+  --color-text: #1f2328;
+  --color-text-muted: #57606a;
+  --color-border: #d0d7de;
+  --color-primary: #1f5fbf;
+  --color-primary-hover: #184c99;
+  --color-on-primary: #ffffff;
+  --color-danger: #b42318;
+  --color-danger-bg: #fdecea;
+  --color-success: #1a6b35;
+  --color-success-bg: #e6f4ea;
+  --color-focus: #1f5fbf;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* 進捗ステータスのラベル。文字と背景のコントラストはライト・ダークとも 7:1 以上 */
+  --status-applied-bg: #e3ebfc;
+  --status-applied-text: #1e3a8a;
+  --status-document-screening-bg: #fcf1d4;
+  --status-document-screening-text: #6b4100;
+  --status-interview-bg: #ede5fb;
+  --status-interview-text: #4c1d95;
+  --status-offered-bg: #dff3e5;
+  --status-offered-text: #14532d;
+  --status-rejected-bg: #fde5e5;
+  --status-rejected-text: #8a1c1c;
+  --status-declined-bg: #ececef;
+  --status-declined-text: #3f3f46;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --radius: 8px;
+  /* system-ui は OS の設定しだいで等幅フォントになるので、日本語のフォントを先に並べる */
+  font-family: 'Hiragino Sans', 'Noto Sans JP', 'Noto Sans CJK JP', 'Yu Gothic UI', system-ui, sans-serif;
+  line-height: 1.6;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+    color-scheme: dark;
+    --color-bg: #15171a;
+    --color-surface: #1f2226;
+    --color-text: #e6e8eb;
+    --color-text-muted: #a8b0ba;
+    --color-border: #3b4048;
+    --color-primary: #7cb0ff;
+    --color-primary-hover: #a3c8ff;
+    --color-on-primary: #0b1220;
+    --color-danger: #ff9b91;
+    --color-danger-bg: #3a1f1d;
+    --color-success: #9fe0b2;
+    --color-success-bg: #1b3324;
+    --color-focus: #a3c8ff;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+    --status-applied-bg: #1e2b4d;
+    --status-applied-text: #c9d8ff;
+    --status-document-screening-bg: #3a2d0e;
+    --status-document-screening-text: #f6d98d;
+    --status-interview-bg: #2f2152;
+    --status-interview-text: #ddcdff;
+    --status-offered-bg: #163a24;
+    --status-offered-text: #b6ebc5;
+    --status-rejected-bg: #4a1d1d;
+    --status-rejected-text: #ffcaca;
+    --status-declined-bg: #2e2f35;
+    --status-declined-text: #d6d6dc;
   }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  min-width: 320px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 16px;
 }
 
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+a {
+  color: var(--color-primary);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* レイアウト: 求職者の画面はスマホ幅、担当者の画面は PC 幅 */
+.page {
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page--narrow {
+  max-width: 430px;
+}
+
+.page--wide {
+  max-width: 1080px;
+  padding: 32px 24px 48px;
+}
+
+.app-title {
+  margin: 32px 0 8px;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.page-title {
+  font-size: 1.375rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.page-link {
+  text-align: center;
+}
+
+.status-text {
+  padding: 24px 0;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* ボタン */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button--block {
+  width: 100%;
+}
+
+.button--small {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 0.875rem;
+}
+
+.button--primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.button--primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.button--secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.button--danger {
+  background: var(--color-surface);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.button--danger:hover:not(:disabled) {
+  background: var(--color-danger-bg);
+}
+
+/* フォーム */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field__label {
+  font-weight: 600;
+}
+
+.field__hint {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.field__input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  /* 16px 未満だとスマホのブラウザが入力時に拡大する */
+  font: inherit;
+  font-size: 16px;
+}
+
+.field__input[aria-invalid='true'] {
+  border-color: var(--color-danger);
+}
+
+.field__error {
+  font-size: 0.875rem;
+  color: var(--color-danger);
+}
+
+/* お知らせ・エラー */
+.notice {
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  overflow-wrap: anywhere;
+}
+
+.notice--error {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.notice--error .button {
+  margin-top: 8px;
+}
+
+.notice--success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
 }

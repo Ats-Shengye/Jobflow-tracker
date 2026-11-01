@@ -1,0 +1,41 @@
+/* 色は index.css の :root の --status-* で、ライト・ダークを切り替える */
+.status-badge {
+  flex-shrink: 0;
+  padding: 2px 10px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge--applied {
+  background: var(--status-applied-bg);
+  color: var(--status-applied-text);
+}
+
+.status-badge--document-screening {
+  background: var(--status-document-screening-bg);
+  color: var(--status-document-screening-text);
+}
+
+.status-badge--interview {
+  background: var(--status-interview-bg);
+  color: var(--status-interview-text);
+}
+
+.status-badge--offered {
+  background: var(--status-offered-bg);
+  color: var(--status-offered-text);
+}
+
+.status-badge--rejected {
+  background: var(--status-rejected-bg);
+  color: var(--status-rejected-text);
+}
+
+.status-badge--declined,
+.status-badge--unknown {
+  background: var(--status-declined-bg);
+  color: var(--status-declined-text);
+}
