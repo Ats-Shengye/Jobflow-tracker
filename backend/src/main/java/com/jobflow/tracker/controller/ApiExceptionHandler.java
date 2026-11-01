@@ -16,10 +16,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.jobflow.tracker.dto.MessageResponse;
 import com.jobflow.tracker.service.DuplicateLoginIdException;
+import com.jobflow.tracker.service.ResourceNotFoundException;
 
 // 応答の本文を {"message": "…"} にそろえる。想定外の例外は中身を出さずに 500 にする。
 @RestControllerAdvice
@@ -73,6 +76,23 @@ public class ApiExceptionHandler {
 	@ExceptionHandler(DuplicateLoginIdException.class)
 	public ResponseEntity<MessageResponse> handleDuplicateLoginId(DuplicateLoginIdException exception) {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(MessageResponse.of(DUPLICATE_LOGIN_ID_MESSAGE));
+	}
+
+	// 他人の応募も存在しない応募も同じ 404 にする（応募があること自体を知らせない）。
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<MessageResponse> handleNotFound(ResourceNotFoundException exception) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(MessageResponse.of(messageFor(HttpStatus.NOT_FOUND)));
+	}
+
+	// パスの ID が数値でない（/api/applications/abc）時は、存在しない ID と同じ 404 にする。
+	// この例外は ErrorResponse ではないので、分けないと下の Exception で 500 になる。入力された値はログに出さない。
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<MessageResponse> handleTypeMismatch(MethodArgumentTypeMismatchException exception) {
+		if (exception.getParameter().hasParameterAnnotation(PathVariable.class)) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(MessageResponse.of(messageFor(HttpStatus.NOT_FOUND)));
+		}
+		return ResponseEntity.badRequest().body(MessageResponse.of(MALFORMED_REQUEST_MESSAGE));
 	}
 
 	// コントローラーの中で権限の確認に引っかかった場合。下の Exception で受けると 500 になってしまうため分ける。

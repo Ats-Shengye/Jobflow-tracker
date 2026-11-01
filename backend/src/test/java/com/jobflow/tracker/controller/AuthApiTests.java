@@ -242,11 +242,11 @@ class AuthApiTests {
 				.andExpect(status().isForbidden());
 	}
 
-	// 担当者用の API はまだ作っていないので、認可を通った先は 404（401・403 にならないことを見る）。
+	// 担当者の役割があれば認可を通り、求職者一覧が返る（401・403 にならないことを見る）。
 	@Test
 	void advisor_onAdvisorApi_passesAuthorization() throws Exception {
 		mockMvc.perform(get("/api/admin/seekers").with(user("advisor-x").roles("ADVISOR")))
-				.andExpect(status().isNotFound())
-				.andExpect(jsonPath("$.message").value("対象が見つかりません"));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$").isArray());
 	}
 }
